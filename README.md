@@ -16,7 +16,8 @@ built-in lock screen when enabled; removing it restores the original.
 - Fingerprint auth via `omarchy-lock-fingerprint` PAM service, only when a
   fingerprint is enrolled
 - Blurred wallpaper background, Hyprland-driven corners, theme-aware colors
-- Safe stranded-lock recovery and idle blanking, mirroring the built-in
+- Safe stranded-lock recovery, mirroring the built-in
+- Display stays on while locked (no auto-blank)
 
 ## Install
 
