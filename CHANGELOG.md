@@ -2,6 +2,11 @@
 
 All notable changes are documented here. Releases follow Semantic Versioning.
 
+## 0.1.2 - 2026-08-16
+
+- Improve foreground readability with opaque lock text, heavier weights,
+  outlines, and stronger shadows without changing the wallpaper effect.
+
 ## 0.1.1 - 2026-08-16
 
 - Match Omarchy's stock wallpaper blur and remove the additional dim overlay.

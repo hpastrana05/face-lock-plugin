@@ -32,6 +32,7 @@ Item {
   readonly property int passwordDotFontSize: Math.round(Style.font.heading * 1.33)
   readonly property int passwordDotLetterSpacing: Math.round(Style.font.heading * 0.19)
   readonly property int clockFontSize: Math.round(Style.font.displayLarge * 1.75)
+  readonly property color foregroundOutline: Qt.rgba(0, 0, 0, 0.9)
   // Space to keep clear on each side of the field for the fingerprint icon
   // (icon width plus a gap) so the centered dots never run under it.
   readonly property real fingerprintReserve: fingerprintConfigured ? Math.round(fingerprintIcon.implicitWidth + 12) : 0
@@ -159,10 +160,12 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         visible: root.userName.length > 0
         text: "Welcome back, " + root.userName
-        color: Color.lock.placeholder
+        color: Color.lock.text
         font.family: Style.font.family
         font.pixelSize: Style.font.body
-        font.weight: Font.Normal
+        font.weight: Font.DemiBold
+        style: Text.Outline
+        styleColor: root.foregroundOutline
         horizontalAlignment: Text.AlignHCenter
       }
 
@@ -173,7 +176,9 @@ Item {
         color: Color.lock.text
         font.family: Style.font.family
         font.pixelSize: root.clockFontSize
-        font.weight: Font.Normal
+        font.weight: Font.DemiBold
+        style: Text.Outline
+        styleColor: root.foregroundOutline
         horizontalAlignment: Text.AlignHCenter
       }
 
@@ -181,9 +186,12 @@ Item {
         id: clockDate
         anchors.horizontalCenter: parent.horizontalCenter
         text: ""
-        color: Color.lock.placeholder
+        color: Color.lock.text
         font.family: Style.font.family
         font.pixelSize: Style.font.subtitle
+        font.weight: Font.DemiBold
+        style: Text.Outline
+        styleColor: root.foregroundOutline
         horizontalAlignment: Text.AlignHCenter
       }
     }
@@ -194,9 +202,9 @@ Item {
       autoPaddingEnabled: false
       visible: infoColumn.visible
       shadowEnabled: true
-      shadowColor: Qt.rgba(0, 0, 0, 0.5)
-      shadowBlur: 0.4
-      shadowVerticalOffset: 2
+      shadowColor: Qt.rgba(0, 0, 0, 0.9)
+      shadowBlur: 0.65
+      shadowVerticalOffset: 3
     }
 
     BorderSurface {
@@ -302,9 +310,12 @@ Item {
       anchors.bottomMargin: 8
       visible: root.hasMedia
       text: (root.mediaArtist.length > 0 ? root.mediaArtist + " — " : "") + root.mediaTitle
-      color: Color.lock.placeholder
+      color: Color.lock.text
       font.family: Style.font.family
-      font.pixelSize: Style.font.bodySmall
+      font.pixelSize: Style.font.body
+      font.weight: Font.DemiBold
+      style: Text.Outline
+      styleColor: root.foregroundOutline
       horizontalAlignment: Text.AlignHCenter
       verticalAlignment: Text.AlignVCenter
       elide: Text.ElideRight
@@ -318,9 +329,9 @@ Item {
       autoPaddingEnabled: false
       visible: mediaText.visible
       shadowEnabled: true
-      shadowColor: Qt.rgba(0, 0, 0, 0.5)
-      shadowBlur: 0.4
-      shadowVerticalOffset: 2
+      shadowColor: Qt.rgba(0, 0, 0, 0.9)
+      shadowBlur: 0.65
+      shadowVerticalOffset: 3
     }
 
     Text {
@@ -329,9 +340,12 @@ Item {
       anchors.topMargin: 12
       visible: root.faceConfigured
       text: root.faceAuthenticating ? "󰄀  Looking for your face…" : "󰄀  Face unlock ready"
-      color: Color.lock.placeholder
+      color: Color.lock.text
       font.family: Style.font.family
       font.pixelSize: Style.font.body
+      font.weight: Font.DemiBold
+      style: Text.Outline
+      styleColor: root.foregroundOutline
       horizontalAlignment: Text.AlignHCenter
     }
   }
