@@ -2,6 +2,10 @@
 
 All notable changes are documented here. Releases follow Semantic Versioning.
 
+## 0.1.3 - 2026-08-16
+
+- Rename the displayed plugin to Face Lock Screen.
+
 ## 0.1.2 - 2026-08-16
 
 - Improve foreground readability with opaque lock text, heavier weights,
