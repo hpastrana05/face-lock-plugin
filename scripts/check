@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly root_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+
+bash -n "$root_dir/scripts/setup-face-auth" \
+  "$root_dir/scripts/remove-face-auth" \
+  "$root_dir/scripts/check"
+
+if command -v shellcheck >/dev/null 2>&1; then
+  shellcheck "$root_dir/scripts/setup-face-auth" \
+    "$root_dir/scripts/remove-face-auth" \
+    "$root_dir/scripts/check"
+fi
+
+if command -v omarchy >/dev/null 2>&1; then
+  omarchy plugin validate "$root_dir"
+else
+  jq -e '
+    .schemaVersion == 1 and
+    (.id | type == "string" and length > 0) and
+    (.name | type == "string" and length > 0) and
+    (.version | type == "string" and length > 0) and
+    (.kinds | type == "array" and length > 0) and
+    (.entryPoints | type == "object")
+  ' "$root_dir/manifest.json" >/dev/null
+  jq -r '.entryPoints[]' "$root_dir/manifest.json" | while IFS= read -r entry; do
+    [[ "$entry" != /* && "$entry" != *..* && -f "$root_dir/$entry" ]]
+  done
+fi
+
+echo "Plugin checks passed."

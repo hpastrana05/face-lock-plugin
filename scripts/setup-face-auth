@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly pam_service="/etc/pam.d/omarchy-lock-face"
+readonly marker_dir="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy-face-lock"
+
+if [[ "$(omarchy version 2>/dev/null)" != 4.* ]]; then
+  echo "This plugin requires Omarchy 4.x." >&2
+  exit 1
+fi
+
+if ! command -v howdy >/dev/null 2>&1; then
+  echo "Installing howdy-git from the AUR. Review the package when prompted."
+  omarchy pkg aur add howdy-git
+fi
+
+pam_module=""
+for candidate in /lib/security/pam_howdy.so /usr/lib/security/pam_howdy.so /usr/local/lib/security/pam_howdy.so; do
+  if [[ -f "$candidate" ]]; then
+    pam_module="$candidate"
+    break
+  fi
+done
+
+if [[ -z "$pam_module" ]]; then
+  echo "pam_howdy.so was not found. Confirm howdy-git installed successfully." >&2
+  exit 1
+fi
+
+echo "Configure Howdy's device_path for your camera, then save and exit."
+sudo howdy config
+echo "Enroll a face for $USER."
+sudo howdy -U "$USER" add
+echo "Test recognition now; close the test window when it succeeds."
+sudo howdy -U "$USER" test
+
+tmp_pam="$(mktemp)"
+trap 'rm -f "$tmp_pam"' EXIT
+printf '%s\n' \
+  '#%PAM-1.0' \
+  '# Isolated face-only service for hpastrana.face-lock.' \
+  "auth sufficient $pam_module" \
+  'auth required pam_deny.so' >"$tmp_pam"
+
+if [[ -e "$pam_service" ]]; then
+  sudo cp --preserve=mode,ownership,timestamps "$pam_service" "${pam_service}.bak.$(date +%Y%m%d%H%M%S)"
+fi
+sudo install -o root -g root -m 0644 "$tmp_pam" "$pam_service"
+mkdir -p "$marker_dir"
+touch "$marker_dir/enrolled"
+
+echo "Face authentication is configured. Install/enable the plugin, then preview it before locking."

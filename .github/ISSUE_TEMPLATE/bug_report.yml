@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a reproducible plugin problem
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: input
+    id: omarchy
+    attributes:
+      label: Omarchy version
+      placeholder: 4.0.0-1
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Camera hardware
+      description: Include whether this is an IR or standard RGB camera.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Remove private information before pasting logs.

@@ -10,6 +10,8 @@ Item {
   property int backgroundVersion: 0
   property string userName: ""
   property bool fingerprintConfigured: false
+  property bool faceConfigured: false
+  property bool faceAuthenticating: false
   property bool authenticatingPassword: false
   property string failureMessage: ""
   property int failedAttempts: 0
@@ -327,6 +329,17 @@ Item {
       shadowBlur: 0.4
       shadowVerticalOffset: 2
     }
+
+    Text {
+      anchors.horizontalCenter: inputField.horizontalCenter
+      anchors.top: inputField.bottom
+      anchors.topMargin: 12
+      visible: root.faceConfigured
+      text: root.faceAuthenticating ? "󰄀  Looking for your face…" : "󰄀  Face unlock ready"
+      color: Color.lock.placeholder
+      font.family: Style.font.family
+      font.pixelSize: Style.font.body
+      horizontalAlignment: Text.AlignHCenter
+    }
   }
 }
-

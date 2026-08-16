@@ -1,53 +1,102 @@
-# Media Lock Screen
+# Media + Face Lock Screen for Omarchy 4
 
-A drop-in replacement lock screen for [Omarchy](https://omarchy.org/) that shows
-the currently playing track (MPRIS), a large clock, and your user name — with
-separate password and fingerprint PAM flows.
+A drop-in Omarchy 4 lock service with a large clock, MPRIS now-playing details,
+password and fingerprint fallback, and automatic face unlock through Howdy.
 
-Built by forking Omarchy's built-in `omarchy.lock` service. It replaces the
-built-in lock screen when enabled; removing it restores the original.
+![Media + Face Lock Screen preview](preview.png)
 
-## Features
+This project is derived from
+[shmall03's Media Lock Screen](https://github.com/shmall03/omarchy-shmall.lock-plugin)
+and Omarchy's built-in `omarchy.lock` service.
 
-- Now-playing title and artist from MPRIS players (e.g. music apps in the tray)
-- Large live clock
-- User name display
-- Password auth via `omarchy-lock-password` PAM service
-- Fingerprint auth via `omarchy-lock-fingerprint` PAM service, only when a
-  fingerprint is enrolled
-- Blurred wallpaper background, Hyprland-driven corners, theme-aware colors
-- Safe stranded-lock recovery, mirroring the built-in
-- Display stays on while locked (no auto-blank)
+## Security model
 
-## Install
+Face, fingerprint, and password authentication use three independent PAM
+services. Face recognition never replaces password authentication. Howdy's own
+documentation warns that face recognition is a convenience feature and may be
+fooled by a similar-looking person or a photograph; an IR camera is strongly
+recommended.
 
-```sh
-omarchy plugin add https://github.com/shmall03/omarchy-shmall.lock-plugin.git --enable
-```
-
-The plugin is enabled with `clonedFrom: omarchy.lock`, so the shell
-automatically disables the built-in lock screen. Lock with your normal keybind
-or `omarchy system lock`.
+The plugin only starts face authentication after the Wayland session lock is
+secure. Failed scans retry once per second without blocking the password field.
 
 ## Requirements
 
-- Omarchy (Quickshell shell)
-- `/etc/pam.d/omarchy-lock-password` present (ships with Omarchy)
-- Optionally `/etc/pam.d/omarchy-lock-fingerprint` for fingerprint unlock
+- Omarchy 4.x with the Quickshell lock service
+- A working camera (preferably IR)
+- `howdy-git` from the AUR
+- `/etc/pam.d/omarchy-lock-password` (provided by Omarchy)
+
+## Install
+
+Add the public repository first. It remains disabled while you review and
+configure its privileged dependency:
+
+```bash
+omarchy plugin add https://github.com/hpastrana/omarchy-face-lock-plugin.git
+```
+
+Configure and enroll Howdy from the installed checkout. This step is
+interactive and uses `sudo`
+because package installation, face enrollment, and PAM configuration are
+privileged operations:
+
+```bash
+~/.config/omarchy/plugins/hpastrana.face-lock/scripts/setup-face-auth
+```
+
+Review the AUR package when prompted. The setup script verifies Omarchy 4,
+installs `howdy-git` when needed, configures the camera, enrolls and tests your
+face, installs an isolated PAM service, and writes a per-user enrollment marker.
+
+After the test succeeds, enable the plugin:
+
+```bash
+omarchy plugin enable hpastrana.face-lock
+```
+
+It declares `clonedFrom: omarchy.lock`, so enabling it disables the built-in
+lock implementation. Preview it before locking:
+
+```bash
+omarchy-shell lock preview
+omarchy-shell lock hidePreview
+```
+
+Test from a spare TTY before relying on it. Password unlock remains available
+at all times.
+
+## Compatibility
+
+The plugin targets Omarchy 4.x and its Quickshell-based `omarchy.lock`
+service. The setup script refuses to change PAM on other major versions.
+
+## Update
+
+```bash
+omarchy plugin update hpastrana.face-lock
+```
 
 ## Remove
 
-```sh
-omarchy plugin remove shmall.lock
+Remove the shell plugin:
+
+```bash
+omarchy plugin remove hpastrana.face-lock --yes
 ```
 
-This restores the built-in Omarchy lock screen.
+Optionally remove only this plugin's PAM service and enrollment marker:
 
-## Preview
+```bash
+~/.config/omarchy/plugins/hpastrana.face-lock/scripts/remove-face-auth
+```
 
-`omarchy-shell lock preview` shows a full-screen preview of the lock screen;
-`omarchy-shell lock hidePreview` hides it.
+This deliberately does not uninstall Howdy or delete its face models because
+other PAM services may use them.
 
 ## License
 
-[MIT](LICENSE). Derived from Omarchy's `omarchy.lock` plugin (MIT).
+MIT. See [LICENSE](LICENSE).
+
+The lock-screen UI is derived from shmall03's MIT-licensed Media Lock Screen
+and Omarchy's MIT-licensed built-in lock service. Their notices are preserved.

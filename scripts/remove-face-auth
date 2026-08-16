@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly pam_service="/etc/pam.d/omarchy-lock-face"
+readonly marker_dir="${XDG_CONFIG_HOME:-$HOME/.config}/omarchy-face-lock"
+
+if [[ -e "$pam_service" ]]; then
+  sudo rm -- "$pam_service"
+fi
+rm -f -- "$marker_dir/enrolled"
+rmdir --ignore-fail-on-non-empty "$marker_dir" 2>/dev/null || true
+
+echo "Removed this plugin's face-auth PAM service and enrollment marker."
+echo "Howdy and its face models were left installed."
