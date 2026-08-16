@@ -128,17 +128,10 @@ Item {
       source: wallpaper
       autoPaddingEnabled: false
       blurEnabled: root.loadBackground && wallpaper.status === Image.Ready
-      blur: 0.35
+      blur: 1.0
       blurMax: 128
-      blurMultiplier: 1.0
-      contrast: 0.88
-    }
-
-    // Extra dim so foreground text reads clearly over any wallpaper.
-    Rectangle {
-      anchors.fill: parent
-      color: Color.background
-      opacity: 0.3
+      blurMultiplier: 1.25
+      contrast: -0.08
     }
 
     MouseArea {
