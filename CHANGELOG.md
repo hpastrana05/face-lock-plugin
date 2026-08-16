@@ -2,6 +2,10 @@
 
 All notable changes are documented here. Releases follow Semantic Versioning.
 
+## 0.1.5 - 2026-08-16
+
+- Rename the repository and package to `face-lock-plugin`.
+
 ## 0.1.4 - 2026-08-16
 
 - Use fixed near-white informational text with crisp black outlines.

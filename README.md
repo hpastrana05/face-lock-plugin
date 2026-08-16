@@ -33,7 +33,7 @@ Add the public repository first. It remains disabled while you review and
 configure its privileged dependency:
 
 ```bash
-omarchy plugin add https://github.com/hpastrana/omarchy-face-lock-plugin.git
+omarchy plugin add https://github.com/hpastrana05/face-lock-plugin.git
 ```
 
 Configure and enroll Howdy from the installed checkout. This step is
