@@ -2,6 +2,13 @@
 
 All notable changes are documented here. Releases follow Semantic Versioning.
 
+## 1.0.0 - 2026-08-16
+
+- Publish the first stable release of Face Lock Screen.
+- Provide automatic Howdy face unlock with password and fingerprint fallback.
+- Include media information, a large clock, and high-contrast lock-screen text.
+- Validate compatibility with Omarchy 4.x.
+
 ## 0.1.5 - 2026-08-16
 
 - Rename the repository and package to `face-lock-plugin`.
