@@ -3,7 +3,7 @@
 A drop-in Omarchy 4 lock service with a large clock, MPRIS now-playing details,
 password and fingerprint fallback, and automatic face unlock through Howdy.
 
-![Face Lock Screen preview](preview.png)
+![Face Lock Screen preview](preview.png?raw=true&v=2)
 
 This project is derived from
 [shmall03's Media Lock Screen](https://github.com/shmall03/omarchy-shmall.lock-plugin)
