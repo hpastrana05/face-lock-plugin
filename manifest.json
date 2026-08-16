@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "hpastrana.face-lock",
   "name": "Face Lock Screen",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Hugo Pastrana Torres",
   "license": "MIT",
   "description": "Omarchy 4 lock screen with media, clock, and separate face, password, and fingerprint PAM flows.",
